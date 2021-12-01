@@ -110,6 +110,11 @@ ENV/
 env.bak/
 venv.bak/
 
+# PyCharm
+.idea/
+migrations/
+_media/
+
 # Spyder project settings
 .spyderproject
 .spyproject
