@@ -7,6 +7,13 @@ class TestView(TestCase):
     def setUp(self):
         self.client = Client()
 
+    def navbar_test(self, soup):
+        # 네비게이션 바 존재
+        navbar = soup.nav
+        # Product, About Company라는 문구가 내비게이션 바에 존재
+        self.assertIn('Product', navbar.text)
+        self.assertIn('About Company', navbar.text)
+
     def test_product_list(self):
         # 상품 목록 페이지 가져오기
         response = self.client.get('/mall/')
@@ -15,11 +22,8 @@ class TestView(TestCase):
         # 페이지 타이틀 Camera Mall
         soup = BeautifulSoup(response.content, 'html.parser')
         self.assertEqual(soup.title.text, 'Camera Mall')
-        # 네비게이션 바 존재
-        navbar = soup.nav
-        # Product, About Company라는 문구가 내비게이션 바에 존재
-        self.assertIn('Product', navbar.text)
-        self.assertIn('About Company', navbar.text)
+
+        self.navbar_test(soup)
 
         # 상품이 하나도 없을 경우
         self.assertEqual(Product.objects.count(), 0)
@@ -72,10 +76,7 @@ class TestView(TestCase):
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # 상품 목록 페이지와 똑같은 내비게이션 바가 있다
-        navbar = soup.nav
-        self.assertIn('Product', navbar.text)
-        self.assertIn('About Company', navbar.text)
+        self.navbar_test(soup)
 
         # 상품의 상품명이 타이틀에 있다
         self.assertIn(product_001.name, soup.title.text)
