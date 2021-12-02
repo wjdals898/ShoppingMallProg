@@ -92,8 +92,12 @@
               {% for p in product_list %}
               <div class="col mb-5">
                   <div class="card h-100">
+                      {% if p.product_image %}
                       <!-- Product image-->
                       <img class="card-img-top" src="{{p.product_image.url}}" alt="{{p.name}}" />
+                      {% else %}
+                      <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"/>
+                      {% endif %}
                       <!-- Product details-->
                       <div class="card-body p-4">
                           <div class="text-center">
