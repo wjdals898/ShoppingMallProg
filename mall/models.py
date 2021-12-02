@@ -11,7 +11,7 @@ class Product(models.Model):
     product_color = models.CharField(max_length=30, default="")
     product_size = models.CharField(max_length=30, default="")
 
-    # product_image = models.ImageField()
+    product_image = models.ImageField(upload_to='mall/images/', blank=True)
 
     def __str__(self):
         return f'[{self.pk}] {self.name}'
