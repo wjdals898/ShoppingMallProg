@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from markdownx.models import MarkdownxField
 from markdownx.utils import markdown
 
@@ -6,12 +7,13 @@ from markdownx.utils import markdown
 class Product(models.Model):
     name = models.CharField(max_length=50)
     price = models.IntegerField()
-    content = MarkdownxField()
+    content = models.TextField()
+    product_color = models.CharField(max_length=30, default="")
+    product_size = models.CharField(max_length=30, default="")
 
-    prod_image = models.ImageField()
-    updated_at = models.DateTimeField(auto_now_add=True)
+    # product_image = models.ImageField()
 
     def __str__(self):
-        return f'[{self.pk}]{self.name}'
+        return f'[{self.pk}] {self.name}'
     def get_absolute_url(self):
         return f'/mall/{self.pk}/'
