@@ -54,3 +54,43 @@ class TestView(TestCase):
         self.assertIn(product_002.name, main_area.text)
         # '아직 게시물이 없습니다'라는 문구 나타나지 않음
         self.assertNotIn('아직 상품이 없습니다', main_area.text)
+
+    def test_product_detail(self):
+        # 상품이 한 개 있다
+        product_001 = Product.objects.create(
+            name='첫 번째',
+            price=1000,
+            content='첫 번째 상품입니다.',
+            product_color='Red',
+            product_size='100*100*30',
+        )
+        # 이 상품의 url은 'mall/1'이다
+        self.assertEqual(product_001.get_absolute_url(), '/mall/1/')
+
+        # 첫 번째 상품의 url로 접근하면 정상적으로 작동
+        response = self.client.get(product_001.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # 상품 목록 페이지와 똑같은 내비게이션 바가 있다
+        navbar = soup.nav
+        self.assertIn('Product', navbar.text)
+        self.assertIn('About Company', navbar.text)
+
+        # 상품의 상품명이 타이틀에 있다
+        self.assertIn(product_001.name, soup.title.text)
+
+        # 상품의 상품명이 상품 영역에 있다
+        main_area = soup.find('div', id='main-area')
+        product_area = main_area.find('div', id='product-area')
+        self.assertIn(product_001.name, product_area.text)
+
+        # 상품의 상품 설명이 상품 영역에 있다
+        self.assertIn(product_001.content, product_area.text)
+
+
+
+
+
+
+
