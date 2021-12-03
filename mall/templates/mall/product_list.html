@@ -2,28 +2,36 @@
 
 
         {% block main_area %}
-          <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
+          <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-2 justify-content-center">
               {% if product_list %}
               {% for p in product_list %}
-              <div class="col mb-5">
-                  <div class="card h-100">
+              <div class="col mb-3">
+                  <div class="card h-100" id="product-{{p.pk}}">
                       {% if p.product_image %}
                       <!-- Product image-->
                       <img class="card-img-top" src="{{p.product_image.url}}" alt="{{p.name}}" />
                       {% else %}
                       <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"/>
                       {% endif %}
+                      <div class="ml-3">
+                          {% if p.category %}
+                          <span class="badge bg-info text-light">{{p.category}}</span>
+                          {% else %}
+                          <span class="badge bg-info text-light">미분류</span>
+                          {% endif %}
+                      </div>
                       <!-- Product details-->
-                      <div class="card-body p-4">
+                      <div class="card-body mb-3">
                           <div class="text-center">
                               <!-- Product name-->
-                              <h4 class="fw-bolder">
+                              <h4>
                                   <a href="{{p.get_absolute_url}}" class="text-reset">
                                       <strong>{{p.name}}</strong>
                                   </a>
                               </h4>
                               <!-- Product price-->
-                              <p>{{p.price}} 원</p>
+                              <p class="font-weight-bold">{{p.price}} 원</p>
+                              <p class="card-text">{{p.content | truncatewords:8}}</p>
                           </div>
                       </div>
                   </div>
