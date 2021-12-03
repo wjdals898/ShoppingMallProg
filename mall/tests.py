@@ -55,6 +55,22 @@ class TestView(TestCase):
         self.assertIn('Product', navbar.text)
         self.assertIn('About Company', navbar.text)
 
+    def test_category_page(self):
+        response = self.client.get(self.category_instax.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+        self.navbar_test(soup)
+        self.category_card_test(soup)
+
+        self.assertIn(self.category_instax.name, soup.h1.text)
+
+        main_area = soup.find('div', id='main-area')
+        self.assertIn(self.category_instax.name, main_area.text)
+        self.assertIn(self.product_001.name, main_area.text)
+        self.assertNotIn(self.product_002.name, main_area.text)
+        self.assertNotIn(self.product_003.name, main_area.text)
+
     def test_product_list(self):
         self.assertEqual(Product.objects.count(), 3)
 
@@ -89,34 +105,28 @@ class TestView(TestCase):
         self.assertIn('아직 상품이 없습니다', main_area.text)
 
     def test_product_detail(self):
-        # 상품이 한 개 있다
-        product_001 = Product.objects.create(
-            name='첫 번째',
-            price=1000,
-            content='첫 번째 상품입니다.',
-            product_color='Red',
-            product_size='100*100*30',
-        )
         # 이 상품의 url은 'mall/1'이다
-        self.assertEqual(product_001.get_absolute_url(), '/mall/4/')
+        self.assertEqual(self.product_001.get_absolute_url(), '/mall/1/')
 
         # 첫 번째 상품의 url로 접근하면 정상적으로 작동
-        response = self.client.get(product_001.get_absolute_url())
+        response = self.client.get(self.product_001.get_absolute_url())
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, 'html.parser')
 
         self.navbar_test(soup)
+        self.category_card_test(soup)
 
         # 상품의 상품명이 타이틀에 있다
-        self.assertIn(product_001.name, soup.title.text)
+        self.assertIn(self.product_001.name, soup.title.text)
 
         # 상품의 상품명이 상품 영역에 있다
         main_area = soup.find('div', id='main-area')
         product_area = main_area.find('div', id='product-area')
-        self.assertIn(product_001.name, product_area.text)
+        self.assertIn(self.product_001.name, product_area.text)
+        self.assertIn(self.category_instax.name, product_area.text)
 
         # 상품의 상품 설명이 상품 영역에 있다
-        self.assertIn(product_001.content, product_area.text)
+        self.assertIn(self.product_001.content, product_area.text)
 
 
 

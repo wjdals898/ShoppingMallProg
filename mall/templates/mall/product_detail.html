@@ -7,34 +7,31 @@
 {% block main_area %}
 <!-- Page content-->
 <!-- Product content-->
-                    <div id="product-area">
-                        <header class="mb-4">
-                            <!-- Product Company -->
-                        </header>
+                    <div class="card px-5" id="product-area">
                         {% if product.product_image %}
                         <!-- Preview image figure-->
-                        <figure class="mb-4"><img class="img-fluid rounded" src="{{product.product_image.url}}" alt="{{product.name}}" /></figure>
+                        <img class="card-img-top" src="{{product.product_image.url}}" alt="{{product.name}}" />
                         {% else %}
-                        <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="{{product.name}}" /></figure>
+                        <img class="icard-img-top" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="{{product.name}}" />
                         {% endif %}
-                        <!-- Post header-->
-                        <section class="mb-4">
-                            <!-- Product title-->
-                            <h1 class="fw-bolder mb-1"><strong>{{product.name}}</strong></h1>
-                        </section>
-                        <section class="mb-4">
-                            <!-- Product price -->
-                            <p class="h4 text-right text-info">{{product.price}}원</p>
-                        </section>
-                        <!-- Product content-->
-                        <section class="mb-5">
-                            <p class=" h5 mb-4">{{product.content}}</p>
-                        </section>
-                        <section class="mb-5">
-                            <h3 class="font-weight-bold text-muted">상세 정보</h3>
+                        <!-- product detail -->
+                        <div class="card-body mb-4">
+                            <!-- category -->
+                            <div class="h2 pb-4">
+                              {% if product.category %}
+                              <span class="badge bg-info text-light">{{product.category}}</span>
+                              {% else %}
+                              <span class="badge bg-info text-light">미분류</span>
+                              {% endif %}
+                            </div>
+                            <h1 class="fw-bolder mb-3"><strong>{{product.name}}</strong></h1>
+                            <p class="h4 text-right text-info mb-5">{{product.price}}원</p>
+                            <p class="h5 mb-5">{{product.content}}</p>
+                            <h3 class="font-weight-bold text-muted mt-4 mb-3">상세 정보</h3>
                             <p class="h5">Color : {{product.product_color}}</p>
                             <p class="h5">Size : {{product.product_size}}</p>
-                        </section>
+                        </div>
+
                     </div>
                     <!-- Comments section-->
                     <div class="mb-5" id="comment-area">

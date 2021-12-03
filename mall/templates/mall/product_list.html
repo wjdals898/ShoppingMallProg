@@ -2,36 +2,38 @@
 
 
         {% block main_area %}
+        <h1 class="mb-4">Product {% if category %}<span class="badge badge-secondary ml-3">{{category}}</span>{% endif %}</h1>
           <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-2 justify-content-center">
               {% if product_list %}
               {% for p in product_list %}
               <div class="col mb-3">
-                  <div class="card h-100" id="product-{{p.pk}}">
+                  <div class="card h-100 mb-3" id="product-{{p.pk}}">
+                      <div class="mr-3 mt-3">
+                          {% if p.category %}
+                          <span class="badge bg-info text-light float-right">{{p.category}}</span>
+                          {% else %}
+                          <span class="badge bg-info text-light float-right">미분류</span>
+                          {% endif %}
+                      </div>
                       {% if p.product_image %}
                       <!-- Product image-->
-                      <img class="card-img-top" src="{{p.product_image.url}}" alt="{{p.name}}" />
+                      <img class="card-img-top"src="{{p.product_image.url}}" alt="{{p.name}}" />
                       {% else %}
                       <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"/>
                       {% endif %}
-                      <div class="ml-3">
-                          {% if p.category %}
-                          <span class="badge bg-info text-light">{{p.category}}</span>
-                          {% else %}
-                          <span class="badge bg-info text-light">미분류</span>
-                          {% endif %}
-                      </div>
+
                       <!-- Product details-->
                       <div class="card-body mb-3">
-                          <div class="text-center">
+                          <div>
                               <!-- Product name-->
-                              <h4>
+                              <h3>
                                   <a href="{{p.get_absolute_url}}" class="text-reset">
-                                      <strong>{{p.name}}</strong>
+                                      {{p.name}}
                                   </a>
-                              </h4>
+                              </h3>
                               <!-- Product price-->
-                              <p class="font-weight-bold">{{p.price}} 원</p>
-                              <p class="card-text">{{p.content | truncatewords:8}}</p>
+                              <p class=" h5 font-weight-bold">{{p.price}} 원</p>
+                              <p class="card-text pt-4">{{p.content | truncatewords:8}}</p>
                           </div>
                       </div>
                   </div>
