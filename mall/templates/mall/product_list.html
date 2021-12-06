@@ -8,7 +8,7 @@
               {% for p in product_list %}
               <div class="col mb-3">
                   <div class="card h-100 mb-3" id="product-{{p.pk}}">
-                      <div class="mr-3 mt-3">
+                      <div class="h4 mr-3 mt-3">
                           {% if p.category %}
                           <span class="badge bg-info text-light float-right">{{p.category}}</span>
                           {% else %}
@@ -17,7 +17,7 @@
                       </div>
                       {% if p.product_image %}
                       <!-- Product image-->
-                      <img class="card-img-top"src="{{p.product_image.url}}" alt="{{p.name}}" />
+                      <a href="{{p.get_absolute_url}}"><img class="card-img-top"src="{{p.product_image.url}}" alt="{{p.name}}"/></a>
                       {% else %}
                       <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"/>
                       {% endif %}

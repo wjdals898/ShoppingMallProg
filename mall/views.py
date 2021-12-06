@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView, CreateView
 from .models import Product, Category
 
 # Create your views here.
@@ -21,6 +22,18 @@ class ProductDetail(DetailView):
         context['categories'] = Category.objects.all()
         context['no_category_product_count'] = Product.objects.filter(category=None).count()
         return context
+
+class ProductCreate(LoginRequiredMixin, CreateView):
+    model = Product
+    fields = ['name', 'price', 'content', 'product_color', 'product_size', 'product_image', 'category']
+
+    def form_valid(self, form):
+        current_user = self.request.user
+        if current_user.is_authenticated & current_user.is_staff:
+            form.instance.author = current_user
+            return super(ProductCreate, self).form_valid(form)
+        else:
+            return redirect('/mall/')
 
 def category_page(request, slug):
     if slug == 'no_category':
