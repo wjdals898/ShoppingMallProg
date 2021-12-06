@@ -89,6 +89,51 @@ class TestView(TestCase):
         self.assertEqual(last_product.name, '카메라1')
         self.assertEqual(last_product.author.username, 'james')
 
+    def test_update_product(self):
+        update_product_url = f'/mall/update_product/{self.product_001.pk}/'
+
+        response = self.client.get(update_product_url)
+        self.assertNotEqual(response.status_code, 200)
+
+        self.assertNotEqual(self.product_001.author, self.user_james)
+        self.client.login(
+            username=self.user_james.username,
+            password='somepassword'
+        )
+        response = self.client.get(update_product_url)
+        self.assertEqual(response.status_code, 403)
+
+        self.client.login(
+            username=self.product_001.author.username,
+            password='somepassword'
+        )
+        response = self.client.get(update_product_url)
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        self.assertEqual('Edit Product', soup.title.text)
+        main_area = soup.find('div', id='main-area')
+        self.assertIn('Edit Product', main_area.text)
+
+        response = self.client.post(
+            update_product_url,
+            {
+                'name':'첫 번째 상품 수정',
+                'price':20000,
+                'content':'첫 번째 상품 수정입니다.',
+                'product_color':'Red',
+                'product_size':'100*100*30',
+                'category':self.category_instax,
+            },
+            follow=True
+        )
+        soup = BeautifulSoup(response.content, 'html.parser')
+        main_area = soup.find('div', id='main-area')
+        self.assertIn('첫 번째 상품 수정', main_area.text)
+        self.assertIn('첫 번째 상품 수정입니다.', main_area.text)
+        self.assertIn(self.category_instax.name, main_area.text)
+
+
     def test_category_page(self):
         response = self.client.get(self.category_instax.get_absolute_url())
         self.assertEqual(response.status_code, 200)

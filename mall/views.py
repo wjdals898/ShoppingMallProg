@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Product, Category
 
 # Create your views here.
@@ -37,6 +38,18 @@ class ProductCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
             return super(ProductCreate, self).form_valid(form)
         else:
             return redirect('/mall/')
+
+class ProductUpdate(LoginRequiredMixin, UpdateView):
+    model = Product
+    fields = ['name', 'price', 'content', 'product_color', 'product_size', 'product_image', 'category']
+
+    template_name = 'mall/product_update_form.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user == self.get_object().author:
+            return super(ProductUpdate, self).dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
 def category_page(request, slug):
     if slug == 'no_category':

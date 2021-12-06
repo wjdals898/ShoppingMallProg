@@ -2,7 +2,6 @@
 
 
         {% block main_area %}
-
         {% if user.is_authenticated %}
             {% if user.is_superuser or user.is_staff %}
                 <a class="btn btn-secondary btn-sm float-right" href="/mall/create_product/" role="button">
