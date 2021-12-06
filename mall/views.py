@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from .models import Product, Category
@@ -23,13 +23,16 @@ class ProductDetail(DetailView):
         context['no_category_product_count'] = Product.objects.filter(category=None).count()
         return context
 
-class ProductCreate(LoginRequiredMixin, CreateView):
+class ProductCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Product
     fields = ['name', 'price', 'content', 'product_color', 'product_size', 'product_image', 'category']
 
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.is_staff
+
     def form_valid(self, form):
         current_user = self.request.user
-        if current_user.is_authenticated & current_user.is_staff:
+        if current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser):
             form.instance.author = current_user
             return super(ProductCreate, self).form_valid(form)
         else:

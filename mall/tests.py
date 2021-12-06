@@ -8,7 +8,10 @@ class TestView(TestCase):
     def setUp(self):
         self.client = Client()
 
-        self.user_trump = User.objects.create_superuser(username='trump', password='somepassword')
+        self.user_trump = User.objects.create_user(username='trump', password='somepassword')
+        self.user_james = User.objects.create_user(username='james', password='somepassword')
+        self.user_james.is_staff = True
+        self.user_james.save()
 
         self.category_instax = Category.objects.create(name='instax', slug='instax')
         self.category_fujifilm = Category.objects.create(name='fujifilm', slug='fujifilm')
@@ -60,7 +63,10 @@ class TestView(TestCase):
         self.assertNotEqual(response.status_code, 200)
 
         self.client.login(username='trump', password='somepassword')
+        response = self.client.get('/mall/create_product/')
+        self.assertNotEqual(response.status_code, 200)
 
+        self.client.login(username='james', password='somepassword')
         response = self.client.get('/mall/create_product/')
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -79,10 +85,9 @@ class TestView(TestCase):
                 'product_size': '130 x 100 x 30',
             }
         )
-        self.assertEqual(Product.objects.count(), 4)
         last_product = Product.objects.last()
         self.assertEqual(last_product.name, '카메라1')
-        self.assertEqual(last_product.author.username, 'trump')
+        self.assertEqual(last_product.author.username, 'james')
 
     def test_category_page(self):
         response = self.client.get(self.category_instax.get_absolute_url())
