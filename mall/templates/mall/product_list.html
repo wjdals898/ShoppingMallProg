@@ -40,7 +40,7 @@
                               </h3>
                               <!-- Product price-->
                               <p class=" h5 font-weight-bold">{{p.price}} 원</p>
-                              <p class="card-text pt-4">{{p.content | truncatewords:8}}</p>
+                              <p class="card-text pt-4">{{p.get_content_markdown | truncatewords_html:10 | safe}}</p>
                           </div>
                       </div>
                   </div>

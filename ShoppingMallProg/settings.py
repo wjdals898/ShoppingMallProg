@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'crispy_forms',
-
+    'markdownx',
 
     'mall',
     'single_pages',

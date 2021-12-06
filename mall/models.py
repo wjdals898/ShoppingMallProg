@@ -20,7 +20,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=50)
     price = models.IntegerField()
-    content = models.TextField()
+    content = MarkdownxField()
     product_color = models.CharField(max_length=30, default="")
     product_size = models.CharField(max_length=30, default="")
     author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
@@ -33,4 +33,6 @@ class Product(models.Model):
         return f'[{self.pk}] {self.name} :: {self.author}'
     def get_absolute_url(self):
         return f'/mall/{self.pk}/'
+    def get_content_markdown(self):
+        return markdown(self.content)
 

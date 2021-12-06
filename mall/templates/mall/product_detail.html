@@ -31,7 +31,7 @@
                             </div>
                             <h1 class="fw-bolder mb-3"><strong>{{product.name}}</strong></h1>
                             <p class="h4 text-right text-info mb-5">{{product.price}}원</p>
-                            <p class="h5 mb-5">{{product.content}}</p>
+                            <p class="h5 mb-5">{{product.get_content_markdown | safe}}</p>
                             <h3 class="font-weight-bold text-muted mt-4 mb-3">상세 정보</h3>
                             <p class="h5">Color : {{product.product_color}}</p>
                             <p class="h5">Size : {{product.product_size}}</p>
