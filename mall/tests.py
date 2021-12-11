@@ -263,7 +263,52 @@ class TestView(TestCase):
         self.assertIn('trump', new_comment_div.text)
         self.assertIn('트럼프의 댓글입니다.', new_comment_div.text)
 
+    def test_comment_update(self):
+        comment_by_trump = Comment.objects.create(
+            product=self.product_001,
+            author=self.user_trump,
+            content='트럼프의 댓글입니다.'
+        )
+        response = self.client.get(self.product_001.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
 
+        comment_area = soup.find('div', id='comment-area')
+        self.assertFalse(comment_area.find('a', id='comment-1-update-btn'))
+        self.assertFalse(comment_area.find('a', id='comment-2-update-btn'))
 
+        self.client.login(id='trump', password='somepassword')
+        response = self.client.get(self.product_001.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        comment_area = soup.find('div', id='comment-area')
+        self.assertFalse(comment_area.find('a', id='comment-2-update-btn'))
+        comment_001_update_btn = comment_area.find('a', id='comment-1-update-btn')
+        # self.assertIn('edit', comment_001_update_btn.text)
+        # self.assertEqual(comment_001_update_btn.attrs['href'], '/mall/update_comment/1/')
+
+        response = self.client.get('/mall/update_comment/1/')
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        self.assertEqual('Edit Comment', soup.title.text)
+        update_comment_form = soup.find('form', id='comment-form')
+        content_textarea = update_comment_form.find('textarea', id='id_content')
+        self.assertIn(self.comment_001.content, content_textarea.text)
+
+        response = self.client.post(
+            f'/mall/update_comment/{self.comment_001.pk}/',
+            {
+                'content': "트럼프의 댓글 수정",
+            },
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        comment_001_div = soup.find('div', id='comment-1')
+        self.assertIn('트럼프의 댓글 수정', comment_001_div.text)
+        self.assertIn('Updated: ', comment_001_div.text)
 
 

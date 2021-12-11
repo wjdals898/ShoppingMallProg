@@ -62,11 +62,19 @@
                                 <div class="media mb-4" id="comment-{{comment.pk}}">
                                     <img class="d-flex rounded-circle mr-3" src="{{comment.get_avatar_url}}" alt="{{comment.author}}" width="60px" />
                                     <div class="media-body">
+                                        {% if user.is_authenticated and comment.author == user %}
+                                            <a role="button" class="btn btn-sm btn-info float-right" id="comment-{{comment.pk}}-update-btn" href="/mall/update_comment/{{comment.pk}}/">
+                                                edit
+                                            </a>
+                                        {% endif %}
                                         <div class="mt-0">
                                             <strong class="h5">{{comment.author}} &nbsp;&nbsp;&nbsp;</strong>
                                             <small class="text-muted">{{comment.created_at}}</small>
                                         </div>
                                         <p>{{comment.content | linebreaks}}</p>
+                                        {% if comment.created_at != comment.modified_at %}
+                                            <p class="text-muted float-right"><small>Updated: {{comment.modified_at}}</small></p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
