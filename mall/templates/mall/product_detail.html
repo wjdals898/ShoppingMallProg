@@ -1,5 +1,5 @@
 {% extends 'mall/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block head_title %}
     {{product.name}}
 {% endblock %}
@@ -42,17 +42,22 @@
                     <div class="my-5" id="comment-area">
                         <div class="card bg-light mb-5">
                             <div class="card-body">
+                                {% if user.is_authenticated %}
                                 <!-- Comment form-->
-                                <form>
+                                <form id="comment-form" method="POST" action="{{product.get_absolute_url}}new_comment/">
+                                    {% csrf_token %}
                                     <div class="form-group">
-                                        <textarea class="form-control" rows="3"></textarea>
+                                        {{comment_form | crispy}}
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
+                                {% else %}
+                                <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="#" data-toggle="modal" data-target="#loginModal">Log in and leave a comment</a>
+                                {% endif %}
                             </div>
                         </div>
                         {% if product.comment_set.exists %}
-                            {% for comment in product.comment_set.all %}
+                            {% for comment in product.comment_set.iterator %}
                                 <!-- Single comment-->
                                 <div class="media mb-4" id="comment-{{comment.pk}}">
                                     <img class="d-flex rounded-circle mr-3" src="{{comment.get_avatar_url}}" alt="{{comment.author}}" width="60px" />
@@ -64,7 +69,7 @@
                                         <p>{{comment.content | linebreaks}}</p>
                                     </div>
                                 </div>
-                                {% endfor %}
-                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
                     </div>
 {% endblock %}
