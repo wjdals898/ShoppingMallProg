@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from bs4 import BeautifulSoup
-from .models import Product, Category
+from .models import Product, Category, Comment
 
 # Create your tests here.
 class TestView(TestCase):
@@ -41,6 +41,12 @@ class TestView(TestCase):
             product_color='black',
             product_size='130*130*90',
             author=self.user_trump,
+        )
+
+        self.comment_001 = Comment.objects.create(
+            product=self.product_001,
+            author=self.user_trump,
+            content='상품이 아주 멋지네요!'
         )
 
     def category_card_test(self, soup):
@@ -206,6 +212,12 @@ class TestView(TestCase):
 
         # 상품의 상품 설명이 상품 영역에 있다
         self.assertIn(self.product_001.content, product_area.text)
+
+        # comment
+        comments_area = soup.find('div', id='comment-area')
+        comment_001_area = comments_area.find('div', id='comment-1')
+        self.assertIn(self.comment_001.author.username, comment_001_area.text)
+        self.assertIn(self.comment_001.content, comment_001_area.text)
 
 
 
