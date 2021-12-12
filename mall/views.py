@@ -6,6 +6,15 @@ from .models import Product, Category, Comment
 from .forms import CommentForm
 
 # Create your views here.
+def delete_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    product = comment.product
+    if request.user.is_authenticated and request.user == comment.author:
+        comment.delete()
+        return redirect(product.get_absolute_url())
+    else:
+        raise PermissionDenied
+
 class CommentUpdate(LoginRequiredMixin, UpdateView):
     model = Comment
     form_class = CommentForm

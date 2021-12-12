@@ -63,9 +63,36 @@
                                     <img class="d-flex rounded-circle mr-3" src="{{comment.get_avatar_url}}" alt="{{comment.author}}" width="60px" />
                                     <div class="media-body">
                                         {% if user.is_authenticated and comment.author == user %}
-                                            <a role="button" class="btn btn-sm btn-info float-right" id="comment-{{comment.pk}}-update-btn" href="/mall/update_comment/{{comment.pk}}/">
+                                        <div class="float-right">
+                                            <a role="button" class="btn btn-sm btn-info" id="comment-{{comment.pk}}-update-btn" href="/mall/update_comment/{{comment.pk}}/">
                                                 edit
                                             </a>
+                                            <a role="button" class="btn btn-sm btn-danger" id="comment-{{comment.pk}}-delete-btn" href="#"
+                                                data-toggle="modal" data-target="#deleteCommentModal-{{comment.pk}}">
+                                                delete
+                                            </a>
+                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="deleteCommentModal-{{comment.pk}}" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id=deleteModalLabel">삭제하시겠습니까?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>{{comment | linebreaks}}</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                        <a role="button" class="btn btn-danger" href="/mall/delete_comment/{{comment.pk}}/">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         {% endif %}
                                         <div class="mt-0">
                                             <strong class="h5">{{comment.author}} &nbsp;&nbsp;&nbsp;</strong>
