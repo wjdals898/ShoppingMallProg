@@ -9,7 +9,10 @@
                 </a>
             {% endif %}
         {% endif %}
-        <h1 class="mb-4">Product {% if category %}<span class="badge badge-secondary ml-3">{{category}}</span>{% endif %}</h1>
+        <h1 class="mb-4">Product
+            {% if search_info %}<small class="text-muted ml-2">{{search_info}}</small>{% endif %}
+            {% if category %}<span class="badge badge-secondary ml-3">{{category}}</span>{% endif %}
+        </h1>
           <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-2 justify-content-center">
               {% if product_list %}
               {% for p in product_list %}
