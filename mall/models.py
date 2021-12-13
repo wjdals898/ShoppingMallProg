@@ -35,6 +35,11 @@ class Product(models.Model):
         return f'/mall/{self.pk}/'
     def get_content_markdown(self):
         return markdown(self.content)
+    def get_avatar_url(self):
+        if self.author.socialaccount_set.exists():
+            return self.author.socialaccount_set.first().get_avatar_url()
+        else:
+            return 'https://doitdjango.com/avatar/id/471/60b65344b416057c/svg/{self.author.email}'
 
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -53,5 +58,4 @@ class Comment(models.Model):
         if self.author.socialaccount_set.exists():
             return self.author.socialaccount_set.first().get_avatar_url()
         else:
-            return 'https://doitdjango.com/avatar/id/414/d933050d58efc136/svg/{self.author.email}/'
-
+            return 'https://doitdjango.com/avatar/id/471/60b65344b416057c/svg/{self.author.email}'
