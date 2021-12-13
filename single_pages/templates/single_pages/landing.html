@@ -26,11 +26,11 @@
                             <div class="col-3 ml-4 my-auto py-2">
                                 {% if product.product_image %}
                                 <a href="{{product.get_absolute_url}}" class="text-decoration-none text-dark">
-                                    <img src="{{product.product_image.url}}" width="80px"  alt="{{product.name}}">
+                                    <img class="rounded" src="{{product.product_image.url}}" width="80px"  alt="{{product.name}}">
                                 </a>
                             {% else %}
                                 <a href="{{product.get_absolute_url}}" class="text-decoration-none text-dark">
-                                    <img src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="{{product.name}}">
+                                    <img class="rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="{{product.name}}">
                                 </a>
                             {% endif %}
                             </div>
