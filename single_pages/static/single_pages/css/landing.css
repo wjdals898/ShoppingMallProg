@@ -1,0 +1,16 @@
+body {
+    background: url('/static/single_pages/images/homeImg4-1.jpg') no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    padding-top: 40px;
+}
+
+section {
+    margin-bottom: 150px;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.4);
+}
