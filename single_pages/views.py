@@ -13,4 +13,11 @@ def landing(request):
     )
 
 def about_company(request):
-    return render(request, 'single_pages/about_company.html')
+    products = Product.objects.all()
+    return render(
+        request,
+        'single_pages/about_company.html',
+        {
+            'products': products,
+        }
+    )
