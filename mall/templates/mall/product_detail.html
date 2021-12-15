@@ -57,7 +57,7 @@
                             </div>
                         </div>
                         {% if product.comment_set.exists %}
-                            {% for comment in product.comment_set.iterator %}
+                            {% for comment in product.comment_set.all %}
                                 <!-- Single comment-->
                                 <div class="media mb-4" id="comment-{{comment.pk}}">
                                     <img class="d-flex rounded-circle mr-3" src="{{comment.get_avatar_url}}" alt="{{comment.author}}" width="60px" />

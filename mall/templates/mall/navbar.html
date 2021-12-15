@@ -43,6 +43,15 @@
             </li>
         {% endif %}
       </ul>
+      <ul  class="navbar-nav mr-3">
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a href="/mypage/" class=" nav-link h4" data-placement="bottom" title="마이페이지">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+            </li>
+          {% endif %}
+      </ul>
     </div>
     </div>
   </nav>

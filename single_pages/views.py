@@ -21,3 +21,13 @@ def about_company(request):
             'products': products,
         }
     )
+
+def mypage(request):
+    products = Product.objects.all()
+    return render(
+        request,
+        'single_pages/mypage.html',
+        {
+            'products': products,
+        }
+    )
