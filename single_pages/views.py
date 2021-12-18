@@ -26,7 +26,7 @@ def mypage(request):
     products = Product.objects.all()
     return render(
         request,
-        'single_pages/mypage.html',
+        'single_pages/my_page.html',
         {
             'products': products,
         }

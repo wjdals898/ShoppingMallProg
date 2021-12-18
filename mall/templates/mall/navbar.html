@@ -43,11 +43,11 @@
             </li>
         {% endif %}
       </ul>
-      <ul  class="navbar-nav mr-3">
+      <ul  class="navbar-nav ml-4">
           {% if user.is_authenticated %}
             <li class="nav-item">
-                <a href="/mypage/" class=" nav-link h4" data-placement="bottom" title="마이페이지">
-                    <i class="fas fa-user-circle"></i>
+                <a href="/my_page/" class="nav-link h2 py-0" data-placement="bottom" title="마이페이지">
+                    <i id="my_page" class="fas fa-user-circle"></i>
                 </a>
             </li>
           {% endif %}
